@@ -26,7 +26,8 @@ seq_change <- function(data) {
 
 recurs_seq <- function(data){
   change_point <- seq_change(data)
-  #print(change_point)
+  #print(length(data$k))
+  #if (change_point$maxT >= 1.23/length(data$k)) { # Kolmogorov critical values
   if (change_point$maxT >= 1.23) { # Kolmogorov critical values
     #record the change point location
     locations <<- c(locations,change_point$maxk)
@@ -44,7 +45,7 @@ recurs_seq <- function(data){
 locations <- c()
 
 N <- 50
-var <- 1
+var <- 0.1
 sd = sqrt(var)
 N1 <- floor(N/3)
 N2 <- floor(2*N/3)-floor(N/3)
@@ -71,9 +72,9 @@ for (i in 1:iter){
 locations.freq = table(locations)
 loc_df <- as.data.frame(locations)
 
-iterations <- paste("Iterations =", iter) 
-variables_num <- paste("Variables_Num=", N)
-variance <- paste("Variance=", var)
+iterations <- paste("Iterations = ", iter) 
+variables_num <- paste("Sample_Size = ", N)
+variance <- paste("Variance = ", var)
 ggplot(loc_df,aes(x = locations)) + geom_histogram(aes(x = locations,y = ..count..), binwidth = 1, color="gray", fill="gray", alpha =0.5)+
   geom_density(aes(x = locations, y = ..count..), bw = 1, adjust=1, color = 'black')+
   ggtitle(paste0(iterations,"\n",variables_num,"\n",variance)) +
